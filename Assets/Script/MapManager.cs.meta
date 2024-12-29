@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: b21a9ced0a0df6c4e97de669a1cc0386
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - Prefab_StartBrick: {fileID: 3385423860588684942, guid: 8aac5439fee50404c9c68046a0e7b0c5, type: 3}
+  - Prefab_EndBrick: {fileID: 3385423860588684942, guid: 3ad7253dda1d7b544b37e0a14dc9771d, type: 3}
+  - Prefab_EatBrick: {fileID: 3385423860588684942, guid: 961af319827ce744f9cb434c50dc68c2, type: 3}
+  - Prefab_TakeBrick: {fileID: 3385423860588684942, guid: 531d05cba7d49ba4995729732ea98a07, type: 3}
+  - Prefab_MapBrick: {fileID: 3385423860588684942, guid: 3201e9cc87ad7d34eb9f678325e003fe, type: 3}
+  - MapText: {fileID: 4900000, guid: df8aa4baa6d1fb04187589caf65c83d2, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
