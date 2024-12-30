@@ -37,7 +37,7 @@ public class MapManager : MonoBehaviour
                         Instantiate(prefab_MapBrick, new Vector3(j, 0, i), Quaternion.identity);
                         break;
                     case 1:
-                        Instantiate(prefab_StartBrick, new Vector3(j, 0, i), Quaternion.Euler(new Vector3(-90, 0, 0)));
+                        Instantiate(prefab_StartBrick, new Vector3(j, 0, i), Quaternion.identity);
                         startPosition = new Vector3(j, 1, i);
                         break;
                     case 2:
@@ -47,7 +47,7 @@ public class MapManager : MonoBehaviour
                         Instantiate(prefab_TakeBrick, new Vector3(j, 0, i), Quaternion.identity);
                         break;
                     case 4:
-                        Instantiate(prefab_EndBrick, new Vector3(j, 0, i), Quaternion.Euler(new Vector3(-90, 0, 0)));
+                        Instantiate(prefab_EndBrick, new Vector3(j, 0, i), Quaternion.identity);
                         endPosition = new Vector3(j, 0, i);
                         break;
                     case 5:

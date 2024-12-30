@@ -26,11 +26,11 @@ public class Player : MonoBehaviour
      * 3 --> trai
      * 4 --> phai
      */
-    private int moveDirection;
     
     private Vector3 mouseDownPosition;
     private Vector3 mouseUpPosition;
-    private Vector3 direction;
+    private Vector3 mouseDirection;
+    private Vector3 moveDirection;
     
     private float offsetY;
     private int currentStack;
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        Invoke("OnInit", 0.01f);//trì hoãn đợi hình thành bản đồ
+        Invoke("OnInit", 0.001f);//trì hoãn đợi hình thành bản đồ
     }
 
     // Update is called once per frame
@@ -47,25 +47,35 @@ public class Player : MonoBehaviour
         if (AtFinishLine())
         {
             DestroyAllChildObject();
+            Celebrate();
             isMoving = false;
             return;//nếu đã đến đích thì dừng game lại
         }
         if (isMoving)
         {
-            switch (moveDirection)
+            if (CheckWall())
             {
-                case 1:
+                isMoving = false;
+            }
+            else
+            {
+                if (moveDirection == Vector3.forward)
+                {
                     MoveForward();
-                    break;
-                case 2:
+                }
+                else if (moveDirection == Vector3.back)
+                {
                     MoveBackward();
-                    break;
-                case 3:
+                }
+                else if (moveDirection == Vector3.left)
+                {
                     MoveLeft();
-                    break;
-                case 4:
+                }
+                else if (moveDirection == Vector3.right)
+                {
                     MoveRight();
-                    break;
+                }
+                CheckBrick();
             }
         }
         else
@@ -77,9 +87,9 @@ public class Player : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                 mouseUpPosition = Input.mousePosition;
-                direction = mouseUpPosition - mouseDownPosition;//Tính vector hướng
-                isMoving = true;
+                mouseDirection = mouseUpPosition - mouseDownPosition;//Tính vector hướng
                 CheckDirection();
+                isMoving = true;
             }
         }
     }
@@ -88,85 +98,61 @@ public class Player : MonoBehaviour
     {
         transform.position = mapManager.StartPosition;
         isMoving = false;
-        moveDirection = 0;
+        moveDirection = Vector3.zero;
         currentStack = 0;
         offsetY = 1f;
     }
 
+    private void Celebrate()
+    {
+        transform.position = new Vector3(transform.position.x, 1, transform.position.z);
+    }
+
     private void CheckDirection()
     {
-        if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y))//Xác định hướng đi
+        if (Mathf.Abs(mouseDirection.x) > Mathf.Abs(mouseDirection.y))//Xác định hướng đi
         {
-            if (direction.x > 0)
+            if (mouseDirection.x > 0)
             {
-                moveDirection = 4; //phai
+                moveDirection = Vector3.right; //phai
             }
             else
             {
-                moveDirection = 3; //trai
+                moveDirection = Vector3.left; //trai
             }
         }
         else
         {
-            if (direction.y > 0)
+            if (mouseDirection.y > 0)
             {
-                moveDirection = 1; //len
+                moveDirection = Vector3.forward; //len
             }
             else
             {
-                moveDirection = 2; //xuong
+                moveDirection = Vector3.back; //xuong
             }
-        }
-            
+        }  
+    }
+    private bool CheckWall()
+    {
+        return Physics.Raycast(transform.position, moveDirection, 0.5f, wallLayer);
     }
     private void MoveForward()
     {
-        if (Physics.Raycast(transform.position, Vector3.forward, 0.5f, wallLayer))
-        {
-            isMoving = false;
-        }
-        else
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z+1);
-            CheckBrick();
-        }
+        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z+1);
     }
     private void MoveBackward()
     {
-        if (Physics.Raycast(transform.position, Vector3.back, 0.5f, wallLayer))
-        {
-            isMoving = false;
-        }
-        else
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y,transform.position.z-1);
-            CheckBrick();
-        }
+        transform.position = new Vector3(transform.position.x, transform.position.y,transform.position.z-1);
     }
 
     private void MoveRight()
     {
-        if (Physics.Raycast(transform.position, Vector3.right, 0.5f, wallLayer))
-        {
-            isMoving = false;
-        }
-        else
-        {
-            transform.position = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
-            CheckBrick();
-        }
+        transform.position = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
     }
     private void MoveLeft()
     {
-        if (Physics.Raycast(transform.position, Vector3.left, 0.5f, wallLayer))
-        {
-            isMoving = false;
-        }
-        else
-        {
-            transform.position = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
-            CheckBrick();
-        }
+        transform.position = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
     }
     private void StackPointBrick()
     {
@@ -190,9 +176,9 @@ public class Player : MonoBehaviour
     {
         foreach (Transform child in transform)
         {
-            Destroy(child.gameObject);
+            child.SetParent(null);
+            DestroyImmediate(child.gameObject);
         }
-        transform.position -= new Vector3(0f, offsetY, 0f);
     }
     private bool OnEatBrick()
     {
@@ -220,36 +206,35 @@ public class Player : MonoBehaviour
         }
         else if (OnPreBlockBrick())
         {
-            StackPointBrick();
             DestroyPreBlockBrick();
-            CheckWall();
+            CheckBlockDirection();
+            isMoving = true;
         }
     }
-    private void CheckWall()
+    private void CheckBlockDirection()
     {
-        if (moveDirection == 1 || moveDirection == 2)
+        if (moveDirection == Vector3.forward || moveDirection == Vector3.back)
         {
             if (Physics.Raycast(transform.position, Vector3.right, 1f, wallLayer))
             {
-                moveDirection = 3;//trai
+                moveDirection = Vector3.left;//trai
             }
             else if (Physics.Raycast(transform.position, Vector3.left, 1f, wallLayer))
             {
-                moveDirection = 4;//phai
+                moveDirection = Vector3.right;//phai
             }
         }
         else
         {
             if (Physics.Raycast(transform.position, Vector3.forward, 1f, wallLayer))
             {
-                moveDirection = 2;//xuong
+                moveDirection = Vector3.back;//xuong
             }
             else if (Physics.Raycast(transform.position, Vector3.back, 1f, wallLayer))
             {
-                moveDirection = 1;//len
+                moveDirection = Vector3.forward;//len
             }
         }
-        isMoving = true;
     }
 
     private void DestroyEatBrick()

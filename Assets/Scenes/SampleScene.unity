@@ -335,7 +335,6 @@ GameObject:
   - component: {fileID: 1570122857}
   - component: {fileID: 1570122856}
   - component: {fileID: 1570122861}
-  - component: {fileID: 1570122862}
   m_Layer: 0
   m_Name: PLayer
   m_TagString: Player
@@ -463,27 +462,6 @@ MonoBehaviour:
   prefab_NormalBrick: {fileID: 3385423860588684942, guid: 164405b6b0f2e984cad8636253a154df, type: 3}
   prefab_PointBrick: {fileID: 3385423860588684942, guid: 99f368ee5c5c2e44991430ea3b8c3ef5, type: 3}
   prefab_BlockConner: {fileID: 4080814793116899811, guid: 1a902e8f1f0b89b47b493a4d09b00010, type: 3}
---- !u!95 &1570122862
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1570122854}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 62bce4e9887061f4fa666db39944865b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1903455413
 GameObject:
   m_ObjectHideFlags: 0
@@ -513,8 +491,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b21a9ced0a0df6c4e97de669a1cc0386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab_StartBrick: {fileID: 1382609396003037, guid: 295db39e1f72aa54580c0b7e0b02aadd, type: 3}
-  prefab_EndBrick: {fileID: 1382609396003037, guid: c0c0d53553e12ad49a661d823864eed2, type: 3}
+  prefab_StartBrick: {fileID: 3385423860588684942, guid: c5188145985ed724f8d4af74594a6f4f, type: 3}
+  prefab_EndBrick: {fileID: 3385423860588684942, guid: c8cc524ddafdfcd4293e853afa8dd26e, type: 3}
   prefab_EatBrick: {fileID: 3385423860588684942, guid: 961af319827ce744f9cb434c50dc68c2, type: 3}
   prefab_TakeBrick: {fileID: 3385423860588684942, guid: 531d05cba7d49ba4995729732ea98a07, type: 3}
   prefab_MapBrick: {fileID: 3385423860588684942, guid: 3201e9cc87ad7d34eb9f678325e003fe, type: 3}
